@@ -31,7 +31,9 @@ void setup() {
 
   //init serial
   Serial.begin(9600);
-  Serial.println("start---");     
+  Serial.println("plutosequencer, V1.1,2021-07-04 v oe6rke\r\n");  
+  Serial.println("start---"); 
+  Serial.println("500ms entprellen\r\n");     
 }
 
 void loop() {
@@ -42,10 +44,10 @@ void loop() {
 
   //0 am pin is pressed, 1 am pin is released
   if(digitalRead(pinPTT) == false) { //entprellen
-    delay(100);
+    delay(500);
     
     if(digitalRead(pinPTT) == false) { //0 = pressed
-      //Serial.print("PTT ON\r\n");
+      Serial.print("PTT ON\r\n");
       
       //PTT Off -> On
       if(isPTTOn == false) {
@@ -69,18 +71,22 @@ void loop() {
     lastState = false;
   }
   //PTT On -> Off
-  if(isPTTOff == false && lastState == false) {
-    Serial.print("Relais OFF\r\n");
-    
-    digitalWrite(pinRelais1, LOW);
-    delay(200);
-    digitalWrite(pinRelais1, HIGH);
+  if(isPTTOff == false && lastState == false) {  //entprellen
+    delay(500);
+
+    if(isPTTOff == false && lastState == false) {
+      Serial.print("Relais OFF\r\n");
       
-    //power via relay 3
-    digitalWrite(pinRelais3, HIGH);
-    
-    isPTTOff = true;
-    isPTTOn = false;
+      digitalWrite(pinRelais1, LOW);
+      delay(200);
+      digitalWrite(pinRelais1, HIGH);
+        
+      //power via relay 3
+      digitalWrite(pinRelais3, HIGH);
+      
+      isPTTOff = true;
+      isPTTOn = false;
+    }
   }
   
   //some delay
